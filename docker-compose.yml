@@ -1,0 +1,23 @@
+services:
+  original:
+    image: alpine:latest
+    container_name: original
+    command: tail -f /dev/null
+    networks:
+      my_bridge_network:
+        ipv4_address: 10.0.0.2
+
+  twin:
+    image: alpine:latest
+    container_name: twin
+    command: tail -f /dev/null
+    networks:
+      my_bridge_network:
+        ipv4_address: 10.0.0.3
+
+networks:
+  my_bridge_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
