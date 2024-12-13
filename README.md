@@ -19,6 +19,7 @@ This project simulate the real world scenario of a unitveristy campus where ther
   2.  If there is a simulation being run in the research lab the researcher's packets are prioritized in the network
   3.  Else the network is shared equally
 
+![project-diagram-export](https://github.com/user-attachments/assets/4b5a0bb2-0b54-4b8d-aa05-17c9b6ed685e)
 
 ## **Installation**
 
