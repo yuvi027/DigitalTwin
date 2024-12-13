@@ -29,32 +29,33 @@ This project simulate the real world scenario of a unitveristy campus where ther
 
 ## **Installation**
 
-### Prerequisites 
-
-1. **Install ComNetsEmu**:
-   Follow the installation guide for ComNetsEmu from the official repository: [ComNetsEmu GitHub](https://github.com/stevelorenz/comnetsemu).
-
-2. **Install Ryu Controller**:
-   ```bash
-   pip install ryu
-   ```
-
-3. **Additional Dependencies**:
-   ```bash
-   sudo apt-get install python3 python3-pip
-   pip install mininet
-   ```
-
 ### Clone the Repository 
+Open your terminal and run the following command to clone the repository:
+
 ```bash
 git clone https://github.com/yuvi027/OnDemandSlicing.git
 cd OnDemandSlicing
 ```
-### Install Git Dependencies
+### Prerequisites 
 
+1. **Install ComNetsEmu**:
+   Follow the installation guide for ComNetsEmu from the official repository: [ComNetsEmu GitHub](https://github.com/stevelorenz/comnetsemu).
+   
+1. **Install Git Dependencies**:
 ```bash
-pip install -r requirements.txt (NEED TO CREATE)
+pip install -r requirements.txt (NEED TO CREATE -> include ryu, python3 python3-pip, mininet)
 ```
+---
+# SHOULD BE IN THE REQUIREMENT
+**Install Ryu Controller**:
+   ```bash
+   pip install ryu
+   ```
+**Additional Dependencies**:
+   ```bash
+   sudo apt-get install python3 python3-pip
+   pip install mininet
+   ```
 ---
 
 ## **Usage**
