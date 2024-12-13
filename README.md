@@ -14,8 +14,10 @@ This project implements a network slicing approach in the **ComNetsEmu** platfor
 
 ## **University Campus Network**
 
-This project simulate the following real world scenario: Dedicated slices for research labs and students.
----
+- This project simulate the real world scenario of a unitveristy campus where there are dedicated slices for research labs and students. There are three scenarios that will lead to activation and deactivation of slices:
+  1.  If there is an ongoing exam, the student slice will be deactivated in order to prevent student devices communicating
+  2.  If there is a simulation being run in the research lab the researcher's packets are prioritized in the network
+  3.  Else the network is shared equally
 
 # (Edit this as needed)
 
