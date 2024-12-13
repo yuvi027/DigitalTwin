@@ -12,7 +12,7 @@ This project implements a network slicing approach in the **ComNetsEmu** platfor
 
 ---
 
-## **University Campus Network
+## **University Campus Network**
 
 This project simulate the real world scenario of a unitveristy campus where there are dedicated slices for researchers and students exams. We have three slices:
 1. Student slice: Only used by students. Deactivated under an exam to prevent communication between students
