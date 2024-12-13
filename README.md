@@ -19,13 +19,11 @@ This project simulate the real world scenario of a unitveristy campus where ther
 2. Extra slice for simulations: When researchers run a simulation they are allocated an extra slice to increase total bandwidth
 3. Researcher slice: Only for researchers. Always active by default
 
-![project-diagram](https://github.com/user-attachments/assets/9d6616ed-472d-4dbc-8db0-8077b979f034)
-
+![project-diagram](https://github.com/user-attachments/assets/137e053b-9cd2-4891-8f73-ae86e8bfe8fb)
 
 There are four scenarios:
 
 ![matrix](https://github.com/user-attachments/assets/161e3697-05ef-47cf-acab-b1c3597bafa6)
-
 
 
 ## **Installation**
