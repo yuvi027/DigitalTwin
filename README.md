@@ -19,7 +19,8 @@ This project simulate the real world scenario of a unitveristy campus where ther
 2. Shared slice: When there is no exam or simulation the link is shared 50/50. When there is no exam and a simulation is being run the researchers are allocated 75% of the link.
 3. Researcher slice: Only for researchers. Always active by default
 
-![project-diagram](https://github.com/user-attachments/assets/137e053b-9cd2-4891-8f73-ae86e8bfe8fb)
+![project-diagram](https://github.com/user-attachments/assets/7427da13-89aa-4120-a329-243ab03bb123)
+
 
 There are four scenarios:
 
