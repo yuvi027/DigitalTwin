@@ -14,34 +14,48 @@ This project implements a network slicing approach in the **ComNetsEmu** platfor
 
 ## **University Campus Network**
 
-This project simulate the following real world scenario: Dedicated slices for research labs and students.
----
+This project simulate the real world scenario of a unitveristy campus where there are dedicated slices for research labs and students. There are three scenarios that will lead to activation and deactivation of slices:
+  1. If there is an ongoing exam, the student slice will be deactivated in order to prevent student devices communicating
+  2. If the researchs run a simulation, their packets are prioritized in the network
+  3. If there is neither an exam or a simulation taking place both of the slices are activated 
+```bash
+   if(ongoing exam): the student slice will be deactivated in order to prevent student devices communicating
+   if(ongoing simulation): the researcher's packets are prioritized in the network
+   else: the network is shared equally
+   ```
+![project-diagram](https://github.com/user-attachments/assets/32bbc982-14b0-4350-bff6-2dcb0594d8d5)
 
-# (Edit this as needed)
+
 
 ## **Installation**
 
+### Clone the Repository 
+Open your terminal and run the following command to clone the repository:
+
+```bash
+git clone https://github.com/yuvi027/OnDemandSlicing.git
+cd OnDemandSlicing
+```
 ### Prerequisites 
 
 1. **Install ComNetsEmu**:
    Follow the installation guide for ComNetsEmu from the official repository: [ComNetsEmu GitHub](https://github.com/stevelorenz/comnetsemu).
-
-2. **Install Ryu Controller**:
+   
+1. **Install Git Dependencies**:
+```bash
+pip install -r requirements.txt (NEED TO CREATE -> include ryu, python3 python3-pip, mininet)
+```
+---
+# SHOULD BE IN THE REQUIREMENT
+**Install Ryu Controller**:
    ```bash
    pip install ryu
    ```
-
-3. **Additional Dependencies**:
+**Additional Dependencies**:
    ```bash
    sudo apt-get install python3 python3-pip
    pip install mininet
    ```
-
-### Clone the Repository 
-```bash
-git clone <repository-url>
-cd on-demand-sdn-slices
-```
 ---
 
 ## **Usage**
