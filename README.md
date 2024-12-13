@@ -14,8 +14,7 @@ This project implements a network slicing approach in the **ComNetsEmu** platfor
 
 ## **University Campus Network**
 
-This project simulate the following real world scenario:
-   - Dedicated slices for research labs and students.
+This project simulate the following real world scenario: Dedicated slices for research labs and students.
 ---
 
 # (Edit this as needed)
