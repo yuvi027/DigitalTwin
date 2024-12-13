@@ -24,11 +24,7 @@ This project simulate the real world scenario of a unitveristy campus where ther
 
 There are four scenarios:
 
-![matrix](https://github.com/user-attachments/assets/e2f19f84-47b6-48e9-9560-739e6f70d975)
-
-
-
-
+![matrix](https://github.com/user-attachments/assets/161e3697-05ef-47cf-acab-b1c3597bafa6)
 
 
 
