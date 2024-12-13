@@ -12,26 +12,21 @@ This project implements a network slicing approach in the **ComNetsEmu** platfor
 
 ---
 
-## **University Campus Network**
+## **University Campus Network
 
 This project simulate the real world scenario of a unitveristy campus where there are dedicated slices for researchers and students exams. We have three slices:
 1. Student slice: Only used by students. Deactivated under an exam to prevent communication between students
 2. Extra slice for simulations: When researchers run a simulation they are allocated an extra slice to increase total bandwidth
 3. Researcher slice: Only for researchers. Always active by default
+
+![project-diagram](https://github.com/user-attachments/assets/9d6616ed-472d-4dbc-8db0-8077b979f034)
+
+
 There are four scenarios:
 
-|         | Exam: True | Exam: False |
-|---------|------------|-------------|
-| Research: True  | Green and yellow are active       | Only green is acitve       |
-| Research: False | Every slice is active      | Red and green are active        |
+![project-table](https://github.com/user-attachments/assets/7d046750-42a2-4005-ad0a-04fe96c2d2e1)
 
 
-```bash
-   if(ongoing exam): the student slice will be deactivated in order to prevent student devices communicating
-   if(ongoing simulation): the researcher's packets are prioritized in the network
-   else: the network is shared equally
-   ```
-![project-diagram](https://github.com/user-attachments/assets/9d6616ed-472d-4dbc-8db0-8077b979f034)
 
 
 
