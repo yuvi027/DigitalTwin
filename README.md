@@ -19,6 +19,12 @@ This project simulate the real world scenario of a unitveristy campus where ther
   2.  If there is a simulation being run in the research lab the researcher's packets are prioritized in the network
   3.  Else the network is shared equally
 
+```bash
+   if(ongoing exam): the student slice will be deactivated in order to prevent student devices communicating
+   if(ongoing simulation): the researcher's packets are prioritized in the network
+   else: the network is shared equally
+   ```
+
 ![project-diagram-export](https://github.com/user-attachments/assets/4b5a0bb2-0b54-4b8d-aa05-17c9b6ed685e)
 
 ## **Installation**
@@ -41,8 +47,13 @@ This project simulate the real world scenario of a unitveristy campus where ther
 
 ### Clone the Repository 
 ```bash
-git clone <repository-url>
-cd on-demand-sdn-slices
+git clone https://github.com/yuvi027/OnDemandSlicing.git
+cd OnDemandSlicing
+```
+### Install Git Dependencies
+
+```bash
+pip install -r requirements.txt (NEED TO CREATE)
 ```
 ---
 
