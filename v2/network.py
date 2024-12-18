@@ -25,7 +25,7 @@ class Topology(Topo):
             self.addHost("St%d" % (i + 1), **host_config)
         # Create researcher nodes
         for j in range(2):
-            self.addHost("r%d" % (i + 1), **host_config)
+            self.addHost("r%d" % (j + 1), **host_config)
 
         # Add switch links
         self.addLink("s1", "s2", **switch_link)
