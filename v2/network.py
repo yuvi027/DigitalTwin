@@ -22,7 +22,7 @@ class Topology(Topo):
 
         # Create host nodes
         for i in range(4):
-            self.addHost("h%d" % (i + 1), host_config)
+            self.addHost("h%d" % (i + 1), **host_config)
 
         # Add switch links
         self.addLink("s1", "s2", **switch_link)
