@@ -20,12 +20,10 @@ This project simulate the real world scenario of a unitveristy campus where ther
 
 ![project-diagram_version_2](https://github.com/user-attachments/assets/885c4b85-64c3-47aa-a975-33c45b4af2d0)
 
-
-
 There are four scenarios:
 ![matrix_version_2](https://github.com/user-attachments/assets/4898e450-bdae-4869-ac61-ec83c18a65a0)
 
-
+The default setup for the network is that exam = false and simulation = false. Hence the student slice is only used by students and the research slice is only used for researchers. 
 
 
 ## **Installation**
