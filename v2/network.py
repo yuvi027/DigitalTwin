@@ -20,21 +20,24 @@ class Topology(Topo):
             sconfig = {"dpid": "%016x" % (i + 1)}
             self.addSwitch("s%d" % (i + 1), **sconfig)
 
-        # Create host nodes
-        for i in range(4):
-            self.addHost("h%d" % (i + 1), **host_config)
+        # Create student nodes
+        for i in range(2):
+            self.addHost("St%d" % (i + 1), **host_config)
+        # Create researcher nodes
+        for j in range(2):
+            self.addHost("r%d" % (i + 1), **host_config)
 
         # Add switch links
         self.addLink("s1", "s2", **switch_link)
-        self.addLink("s2", "s4", **switch_link)
-        self.addLink("s1", "s3", **switch_link)
+        self.addLink("s2", "s3", **switch_link)
         self.addLink("s3", "s4", **switch_link)
+        self.addLink("s1", "s4", **switch_link)
 
         # Add host links
-        self.addLink("h1", "s1", **host_link)
-        self.addLink("h2", "s1", **host_link)
-        self.addLink("h3", "s4", **host_link)
-        self.addLink("h4", "s4", **host_link)
+        self.addLink("St1", "s1", **host_link)
+        self.addLink("r1", "s1", **host_link)
+        self.addLink("St2", "s3", **host_link)
+        self.addLink("r2", "s3", **host_link)
 
 
 topos = {"topology": (lambda: Topology())}

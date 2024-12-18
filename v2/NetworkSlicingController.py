@@ -5,11 +5,11 @@ from ryu.controller.handler import set_ev_cls
 from ryu.ofproto import ofproto_v1_3
 
 
-class TrafficSlicing(app_manager.RyuApp):
+class NetworkSlicingController(app_manager.RyuApp):
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
 
     def __init__(self, *args, **kwargs):
-        super(TrafficSlicing, self).__init__(*args, **kwargs)
+        super(NetworkSlicingController, self).__init__(*args, **kwargs)
 
         # out_port = slice_to_port[dpid][in_port]
         self.slice_to_port = {
