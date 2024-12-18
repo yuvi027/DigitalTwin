@@ -17,8 +17,7 @@ This project implements a network slicing approach in the **ComNetsEmu** platfor
 This project simulate the real world scenario of a unitveristy campus where there are dedicated slices for researchers and students exams. We have 2 slices:
 1. Shared slice: When there is no exam or simulation, the link is for students. When there is no exam and a simulation is being run, it is shared 50/50 between students and researchers. When there is an exam and a simulation, the link is for researchers. When there is an exam and no simulation, the link is deactivated.
 2. Researcher slice: Only for researchers. Always active by default
-
-![project-diagram_version_2](https://github.com/user-attachments/assets/885c4b85-64c3-47aa-a975-33c45b4af2d0)
+![project-diagram_version_2](https://github.com/user-attachments/assets/77434b7d-e72d-4a3d-90ce-7de5e6df6f0b)
 
 There are four scenarios:
 ![matrix_version_2](https://github.com/user-attachments/assets/4898e450-bdae-4869-ac61-ec83c18a65a0)
