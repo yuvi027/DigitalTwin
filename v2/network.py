@@ -28,16 +28,16 @@ class Topology(Topo):
             self.addHost("r%d" % (j + 1), **host_config)
 
         # Add switch links
-        self.addLink("s1", "s2", intfName1="s1-eth3", intfName2="s2-eth1" **switch_link)
+        self.addLink("s1", "s2", intfName1="s1-eth3", intfName2="s2-eth1", **switch_link)
         self.addLink("s2", "s3", intfName1="s2-eth2", intfName2="s3-eth4", **switch_link)
         self.addLink("s4", "s3", intfName1="s4-eth2", intfName2="s3-eth3",**switch_link)
         self.addLink("s1", "s4", intfName1="s1-eth4", intfName2="s4-eth1",**switch_link)
 
         # Add host links
-        self.addLink("St1", "s1", intfName1="St1-eth1", intfName2="s1-eth1",**host_link)
-        self.addLink("r1", "s1", intfName1="r1-eth1", intfName2="s1-eth2",**host_link)
-        self.addLink("St2", "s3", intfName1="St2-eth1", intfName2="s3-eth1",**host_link)
-        self.addLink("r2", "s3", intfName1="r2-eth1", intfName2="s3-eth2",**host_link)
+        self.addLink("St1", "s1", intfName1="St1-eth1", intfName2="s1-eth1", **host_link)
+        self.addLink("r1", "s1", intfName1="r1-eth1", intfName2="s1-eth2", **host_link)
+        self.addLink("St2", "s3", intfName1="St2-eth1", intfName2="s3-eth1", **host_link)
+        self.addLink("r2", "s3", intfName1="r2-eth1", intfName2="s3-eth2", **host_link)
 
 
 topos = {"topology": (lambda: Topology())}
