@@ -3,6 +3,12 @@ from ryu.controller import ofp_event
 from ryu.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER
 from ryu.controller.handler import set_ev_cls
 from ryu.ofproto import ofproto_v1_3
+from ryu.lib.packet import packet
+from ryu.lib.packet import ethernet
+from ryu.lib.packet import ether_types
+from ryu.lib.packet import udp
+from ryu.lib.packet import tcp
+from ryu.lib.packet import icmp
 
 
 class NetworkSlicingController(app_manager.RyuApp):
@@ -11,13 +17,15 @@ class NetworkSlicingController(app_manager.RyuApp):
     def __init__(self, *args, **kwargs):
         super(NetworkSlicingController, self).__init__(*args, **kwargs)
 
+        
+        
         # out_port = slice_to_port[dpid][in_port]
-        self.slice_to_port = {
-            1: {1: 3, 3: 1, 2: 4, 4: 2},
-            3: {1: 4, 4: 1, 2: 3, 3: 2},
-            2: {1: 2, 2: 1},
-            4: {1: 2, 2: 1},
-        }
+        self.mac_to_port = {
+                1: {"00:00:00:00:00:01": 1, "00:00:00:00:00:02": 3, "00:00:00:00:00:03": 2, "00:00:00:00:00:04": 4},
+                2: {"00:00:00:00:00:01": 1, "00:00:00:00:00:02": 2},
+                3: {"00:00:00:00:00:01": 4, "00:00:00:00:00:02": 1, "00:00:00:00:00:03": 3, "00:00:00:00:00:04": 2},
+                4: {"00:00:00:00:00:03": 1, "00:00:00:00:00:04": 2}
+                }
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
     def switch_features_handler(self, ev):
@@ -44,6 +52,7 @@ class NetworkSlicingController(app_manager.RyuApp):
         datapath.send_msg(mod)
 
     def _send_package(self, msg, datapath, in_port, actions):
+        print("SENDING THE PACKAGE!!!!!")
         data = None
         ofproto = datapath.ofproto
         if msg.buffer_id == ofproto.OFP_NO_BUFFER:
@@ -65,9 +74,26 @@ class NetworkSlicingController(app_manager.RyuApp):
         in_port = msg.match["in_port"]
         dpid = datapath.id
 
-        out_port = self.slice_to_port[dpid][in_port]
+        #out_port = self.slice_to_port[dpid][in_port]
+        
+        pkt = packet.Packet(msg.data)
+        eth = pkt.get_protocol(ethernet.ethernet)
+        if eth.ethertype == ether_types.ETH_TYPE_LLDP:
+            # ignore lldp packet
+            return
+    
+        dst = eth.dst
+        if "33:33" in dst:
+            # ignore multicast
+            return
+
+        print("dpid: ", dpid)
+        print("eth_dst: ", dst)
+        out_port = self.mac_to_port[dpid][dst]
+        print("out_port:", out_port)
         actions = [datapath.ofproto_parser.OFPActionOutput(out_port)]
-        match = datapath.ofproto_parser.OFPMatch(in_port=in_port)
+        print("actions:", actions)
+        match = datapath.ofproto_parser.OFPMatch(eth_dst=dst)
 
         self.add_flow(datapath, 1, match, actions)
         self._send_package(msg, datapath, in_port, actions)
