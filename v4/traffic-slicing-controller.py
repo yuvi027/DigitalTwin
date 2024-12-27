@@ -50,6 +50,29 @@ class TrafficSlicing(app_manager.RyuApp):
         control_thread = threading.Thread(target=control_loop, daemon=True)
         control_thread.start()
 
+    def update_network_state(self, exam, simulation):
+        """Updates network state based on exam and simulation modes"""
+        self.exam_mode = exam
+        self.simulation_mode = simulation
+        
+        # Store previous datapaths to clear flows
+        datapaths = [dp for dp in self.dpset.get_all() if dp is not None]
+        
+        for dp in datapaths:
+            # Clear existing flows
+            self.clear_all_flows(dp)
+            
+            # Install default flow for controller communication
+            parser = dp.ofproto_parser
+            ofproto = dp.ofproto
+            match = parser.OFPMatch()
+            actions = [parser.OFPActionOutput(ofproto.OFPP_CONTROLLER, ofproto.OFPCML_NO_BUFFER)]
+            self.add_flow(dp, 0, match, actions)
+            
+        print(f"\nNetwork state updated:")
+        print(f"Exam mode: {exam}")
+        print(f"Simulation mode: {simulation}")
+
     def clear_all_flows(self, datapath):
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
