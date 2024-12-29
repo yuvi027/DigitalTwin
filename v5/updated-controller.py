@@ -23,7 +23,6 @@ class TrafficSlicing(app_manager.RyuApp):
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
 
     def __init__(self, *args, **kwargs):
-        kill_existing_controllers()
         super(TrafficSlicing, self).__init__(*args, **kwargs)
         self.exam_mode = False
         self.simulation_mode = False
