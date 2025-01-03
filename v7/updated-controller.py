@@ -15,6 +15,14 @@ class TrafficSlicing(app_manager.RyuApp):
         super(TrafficSlicing, self).__init__(*args, **kwargs)
         self.exam_mode = False
         self.simulation_mode = False
+
+        self.slice_to_port = {
+            1: {1: 3, 3: 1, 2: 4, 4: 2},
+            4: {1: 3, 3: 1, 2: 4, 4: 2},
+            2: {1: 2, 2: 1},
+            3: {1: 2, 2: 1},
+        }
+
         # Start with default configuration (both false)
         self.clear_flows_and_queues()
         # Start control thread
@@ -106,46 +114,77 @@ class TrafficSlicing(app_manager.RyuApp):
                                match=match, instructions=inst)
         datapath.send_msg(mod)
 
+    def _send_package(self, msg, datapath, in_port, actions):
+        data = None
+        ofproto = datapath.ofproto
+        if msg.buffer_id == ofproto.OFP_NO_BUFFER:
+            data = msg.data
+
+        out = datapath.ofproto_parser.OFPPacketOut(
+            datapath=datapath,
+            buffer_id=msg.buffer_id,
+            in_port=in_port,
+            actions=actions,
+            data=data,
+        )
+        datapath.send_msg(out)
+
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
     def _packet_in_handler(self, ev):
-        """Handle packet-in events"""
-        # Default mode only - shell scripts handle other modes
-        if not self.exam_mode and not self.simulation_mode:
-            msg = ev.msg
-            datapath = msg.datapath
-            ofproto = datapath.ofproto
-            parser = datapath.ofproto_parser
-            in_port = msg.match['in_port']
-            dpid = datapath.id
+        msg = ev.msg
+        datapath = msg.datapath
+        in_port = msg.match["in_port"]
+        dpid = datapath.id
 
-            pkt = packet.Packet(msg.data)
-            eth = pkt.get_protocol(ethernet.ethernet)
-            ip = pkt.get_protocol(ipv4.ipv4)
+        out_port = self.slice_to_port[dpid][in_port]
+        actions = [datapath.ofproto_parser.OFPActionOutput(out_port)]
+        match = datapath.ofproto_parser.OFPMatch(in_port=in_port)
 
-            if ip:
-                if dpid == 1:  # Switch S1
-                    if in_port == 1:  # From h1 to h3
-                        out_port = 3
-                    elif in_port == 3:  # From h3 to h1
-                        out_port = 1
-                    else:
-                        out_port = ofproto.OFPP_FLOOD
-                elif dpid == 4:  # Switch S4
-                    if in_port == 1:  # From h1 to h3
-                        out_port = 3
-                    elif in_port == 3:  # From h3 to h1
-                        out_port = 1
-                    else:
-                        out_port = ofproto.OFPP_FLOOD
-                else:
-                    out_port = ofproto.OFPP_FLOOD
+        self.add_flow(datapath, 1, match, actions)
+        self._send_package(msg, datapath, in_port, actions)
 
-                actions = [parser.OFPActionOutput(out_port)]
-                match = parser.OFPMatch(in_port=in_port, eth_type=eth.ethertype,
-                                      ipv4_src=ip.src, ipv4_dst=ip.dst)
-                self.add_flow(datapath, 1, match, actions)
+
+    # @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
+    # def _packet_in_handler(self, ev):
+    #     """Handle packet-in events"""
+    #     # Default mode only - shell scripts handle other modes
+    #     if not self.exam_mode and not self.simulation_mode:
+    #         msg = ev.msg
+    #         datapath = msg.datapath
+    #         ofproto = datapath.ofproto
+    #         parser = datapath.ofproto_parser
+    #         in_port = msg.match['in_port']
+    #         dpid = datapath.id
+
+    #         pkt = packet.Packet(msg.data)
+    #         eth = pkt.get_protocol(ethernet.ethernet)
+    #         ip = pkt.get_protocol(ipv4.ipv4)
+
+    #         if ip:
+    #             if dpid == 1:  # Switch S1
+    #                 if in_port == 1:  # From h1 to h3
+    #                     out_port = 3
+    #                 elif in_port == 3:  # From h3 to h1
+    #                     out_port = 1
+    #                 else:
+    #                     out_port = ofproto.OFPP_FLOOD
+    #             elif dpid == 4:  # Switch S4
+    #                 if in_port == 1:  # From h1 to h3
+    #                     out_port = 3
+    #                 elif in_port == 3:  # From h3 to h1
+    #                     out_port = 1
+    #                 else:
+    #                     out_port = ofproto.OFPP_FLOOD
+    #             else:
+    #                 out_port = ofproto.OFPP_FLOOD
+
+    #             actions = [parser.OFPActionOutput(out_port)]
+    #             match = parser.OFPMatch(in_port=in_port, eth_type=eth.ethertype,
+    #                                   ipv4_src=ip.src, ipv4_dst=ip.dst)
+    #             self.add_flow(datapath, 1, match, actions)
                 
-                data = msg.data if msg.buffer_id == ofproto.OFP_NO_BUFFER else None
-                out = parser.OFPPacketOut(datapath=datapath, buffer_id=msg.buffer_id,
-                                        in_port=in_port, actions=actions, data=data)
-                datapath.send_msg(out)
+    #             data = msg.data if msg.buffer_id == ofproto.OFP_NO_BUFFER else None
+    #             out = parser.OFPPacketOut(datapath=datapath, buffer_id=msg.buffer_id,
+    #                                     in_port=in_port, actions=actions, data=data)
+    #             datapath.send_msg(out)
+    
