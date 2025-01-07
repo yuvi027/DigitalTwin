@@ -1,0 +1,4 @@
+It is almost working now.
+All cases are working, but going from a case back to original setup does not work.
+It seems like the problem is that the _packet_in_handler() is not called when the switch receives a packet and it has no flow!?
+The function is only called at the beginning, not after the flows are deleted.
