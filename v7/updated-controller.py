@@ -52,12 +52,12 @@ class TrafficSlicing(app_manager.RyuApp):
 
         # Apply new configuration based on modes
         if exam and simulation:
-            self.execute_shell_script("install-flows-both-modes.sh")
+            self.execute_shell_script("exam_and_simulation.sh")
         elif exam:
-            self.execute_shell_script("install-flows-exam-mode-only.sh")
+            self.execute_shell_script("exam.sh")
         elif simulation:
             # self.execute_shell_script("set_queues.sh")
-            self.execute_shell_script("set_queues_and_install_flows.sh")
+            self.execute_shell_script("simulation.sh")
         else:
             # Default mode - no scripts needed as controller handles basic forwarding
             pass
