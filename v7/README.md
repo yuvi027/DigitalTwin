@@ -1,21 +1,12 @@
 # On Demand Slicing
-This project implements a network slicing approach in the **ComNetsEmu** platform. It allows users to dynamically activate or deactivate network slices via CLI/GUI commands. A single SDN controller, such as Ryu, is used to manage the network slices.
-
----
-
-## **Features**
-
-- **Dynamic Slicing**: Activate and deactivate slices based on user requirements.
-- **Customizable Topology**: Define network topologies directly in Python.
-- **Flexible Slice Configuration**: Allocate bandwidth, define flows, and set priorities for each slice.
-- **Real-Time Traffic Management**: Adjust network parameters dynamically to suit real-world demands.
+This project implements a network slicing approach in the **ComNetsEmu** platform. It allows users to dynamically activate or deactivate network slices via CLI commands. A single SDN controller,a Ryu, is used to manage the network slices.
 
 ---
 
 ## **University Campus Network**
 ![project-diagram_version_2](https://github.com/user-attachments/assets/1cfa6fbe-4ad9-4b53-a04b-e418e9eedb01)
 
-This project simulate the real world scenario of a unitveristy campus where there are dedicated slices for researchers and students exams. We have 2 slices:
+This project simulates a unitveristy campus where there are dedicated slices for researchers and students. There are two slices:
 
 1. Shared slice: When there is no exam or simulation, the link is for students. When there is no exam and a simulation is being run, it is shared 50/50 between students and simulation traffic. When there is an exam and a simulation, the link is for simulation. When there is an exam and no simulation, the link is deactivated.
 2. Researcher slice: Only for normal researcher traffic. Always active by default
