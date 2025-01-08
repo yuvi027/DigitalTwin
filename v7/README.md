@@ -6,15 +6,17 @@ This project implements a network slicing approach in the **ComNetsEmu** platfor
 ## **University Campus Network**
 ![project-diagram_version_2](https://github.com/user-attachments/assets/1cfa6fbe-4ad9-4b53-a04b-e418e9eedb01)
 
-This project simulates a unitveristy campus where there are dedicated slices for researchers and students. There are two slices:
+This project simulates a university campus where there are dedicated slices for researchers and students. Researchers have 2 types of traffic, regular communication, and simulation. Meanwhile, students have only communication traffic. There are two slices, shared and researchers slices. Their functiuons depend on the scenario:
 
-1. Shared slice: When there is no exam or simulation, the link is for students. When there is no exam and a simulation is being run, it is shared 50/50 between students and simulation traffic. When there is an exam and a simulation, the link is for simulation. When there is an exam and no simulation, the link is deactivated.
-2. Researcher slice: Only for normal researcher traffic. Always active by default
+1. When there is no exam or simulation, the shared slice is reserved for students, and the researchers slice is reserved for the regular researchers' communication.
+2. When there is no exam but a simulation is being run, the shared slice is shared 50/50 between students and researchers' communication, while the researchers' slice is reserved for simulation traffic.
+3. When an exam and a simulation are both running, the shared slice is reserved only for researchers communication, and the researchers' slice is reserved for simulation traffic.
+4. When there is an exam and no simulation, the shared slice is deactivated, and the researchers' slice is reserved for regular researchers' communication.
 
 There are four scenarios:
 ![matrix_version_3](https://github.com/user-attachments/assets/c5f595e7-a4b1-48fd-a2fe-55a182a0969a)
 
-The default setup for the network is that exam = false and simulation = false. Hence the student slice is only used by students and the research slice is only used for normal researcher traffic. 
+The default setup for the network is that there is neither an exam or a simulation running (exam = false and simulation = false). Hence the student slice is only used by students and the research slice is only used for normal researcher traffic. 
 
 
 ## **Installation**
