@@ -64,10 +64,10 @@ class TrafficSlicing(app_manager.RyuApp):
         elif exam:
             self.execute_shell_script("exam.sh")
         elif simulation:
-            # self.execute_shell_script("set_queues.sh")
             self.execute_shell_script("simulation.sh")
         else:
             # Default mode - no scripts needed as controller handles basic forwarding
+            print("In if else")
             self.execute_shell_script("default.sh")
             # pass
             # subprocess.run(['sudo', 'ovs-ofctl', 'del-flows', 'bridge']) # Attempt to fix switching to default scenario
@@ -78,6 +78,7 @@ class TrafficSlicing(app_manager.RyuApp):
 
     def user_input_handler(self):
         """Handle user input for mode changes"""
+        print("In beginning")
         self.execute_shell_script("default.sh")
         while True:
             time.sleep(5)  # Wait before asking for input
