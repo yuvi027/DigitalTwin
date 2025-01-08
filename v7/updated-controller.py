@@ -78,6 +78,7 @@ class TrafficSlicing(app_manager.RyuApp):
 
     def user_input_handler(self):
         """Handle user input for mode changes"""
+        self.execute_shell_script("default.sh")
         while True:
             time.sleep(5)  # Wait before asking for input
             try:
