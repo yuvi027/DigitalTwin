@@ -68,8 +68,9 @@ class TrafficSlicing(app_manager.RyuApp):
             self.execute_shell_script("simulation.sh")
         else:
             # Default mode - no scripts needed as controller handles basic forwarding
+            self.execute_shell_script("default.sh")
             # pass
-            subprocess.run(['sudo', 'ovs-ofctl', 'del-flows', 'bridge']) # Attempt to fix switching to default scenario
+            # subprocess.run(['sudo', 'ovs-ofctl', 'del-flows', 'bridge']) # Attempt to fix switching to default scenario
 
         print(f"\nNetwork state updated:")
         print(f"Exam mode: {exam}")
