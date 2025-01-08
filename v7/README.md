@@ -26,6 +26,7 @@ Open your terminal and run the following command to clone the repository:
 
 ```bash
 git clone https://github.com/yuvi027/OnDemandSlicing.git
+
 cd OnDemandSlicing
 ```
 ### Prerequisites 
@@ -35,96 +36,54 @@ cd OnDemandSlicing
    
 1. **Install Git Dependencies**:
 ```bash
-pip install -r requirements.txt (NEED TO CREATE -> include ryu, python3 python3-pip, mininet)
+sudo apt-get install mininet openvswitch-switch
+
+pip install -r requirements.txt
 ```
----
-# SHOULD BE IN THE REQUIREMENT
-**Install Ryu Controller**:
-   ```bash
-   pip install ryu
-   ```
-**Additional Dependencies**:
-   ```bash
-   sudo apt-get install python3 python3-pip
-   pip install mininet
-   ```
 ---
 
 ## **Usage**
 
-### Step 1: Define the Topology
-Define your network topology in the Python file (e.g., `custom_topology.py`). Example:
+### Step 1: Launch the ComNetsEmu Environment
 
-```python
-from mininet.net import Mininet
-from mininet.node import Controller, OVSSwitch, RemoteController
-from mininet.link import TCLink
-from mininet.topo import Topo
+Activate ComNetsEmu:
 
-class CustomTopology(Topo):
-    def build(self):
-        h1 = self.addHost('h1')
-        h2 = self.addHost('h2')
-        h3 = self.addHost('h3')
-        h4 = self.addHost('h4')
-
-        s1 = self.addSwitch('s1')
-        s2 = self.addSwitch('s2')
-
-        # Add links with bandwidth constraints
-        self.addLink(h1, s1, bw=10)
-        self.addLink(h2, s1, bw=10)
-        self.addLink(s1, s2, bw=20)
-        self.addLink(s2, h3, bw=10)
-        self.addLink(s2, h4, bw=10)
-
-if __name__ == "__main__":
-    net = Mininet(topo=CustomTopology(), controller=RemoteController, link=TCLink)
-    net.start()
-    net.pingAll()
-    net.stop()
+```bash
+sudo comnetsemu
 ```
 
-### Step 2: Configure the Controller
-Use the `Ryu` controller to define flow rules for each slice. Example:
+### Step 2: Start the Ryu Controller
 
-```python
-from ryu.base import app_manager
-from ryu.controller import ofp_event
-from ryu.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER
-from ryu.controller.handler import set_ev_cls
-from ryu.lib.packet import packet, ethernet, ipv4, tcp
-from ryu.ofproto import ofproto_v1_3
+Navigate to the project directory and launch the Ryu controller:
 
-class SliceController(app_manager.RyuApp):
-    OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
-
-    def __init__(self, *args, **kwargs):
-        super(SliceController, self).__init__(*args, **kwargs)
-
-    @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
-    def switch_features_handler(self, ev):
-        # Define flow rules here
-        self.logger.info("Switch connected: %s", ev.msg.datapath.id)
+```bash
+ryu-manager slice_controller.py
 ```
 
-### Step 3: Launch the Topology
-1. Start the Ryu controller:
-   ```bash
-   ryu-manager slice_controller.py
-   ```
-2. Run the Mininet topology:
-   ```bash
-   sudo python3 custom_topology.py
-   ```
+### Step 3: Run the Network Topology
 
-### Step 4: Activate Slices
-Use CLI commands to dynamically activate or deactivate slices:
-- Example:
-   ```bash
-   mininet> xterm h1 h3
-   ```
-   - Send traffic between `h1` and `h3` to test slice performance.
+In a separate terminal, run the predefined network topology:
+
+```bash
+sudo python3 custom_topology.py
+```
+
+### Step 4: Test and Monitor Slices
+
+- Use the Mininet CLI to interact with hosts and test network performance.
+- Example commands:
+
+  ```bash
+  mininet> pingall  # Test connectivity between hosts
+  mininet> xterm h1 h3  # Open terminals for specific hosts
+  ```
+
+- Use tools like `iperf` to validate bandwidth and traffic isolation between slices:
+
+  ```bash
+  iperf -s  # Run on one host
+  iperf -c <host-ip>  # Run on another host
+  ```
 
 ---
 
@@ -148,24 +107,9 @@ Use CLI commands to dynamically activate or deactivate slices:
 
 ---
 
-## **Customization**
-
-- **Topologies**: Edit the `custom_topology.py` file to create your own network setups.
-- **Slices**: Update the controller logic in `slice_controller.py` to define new slice types.
-- **Traffic Patterns**: Use traffic generators like `iperf` or `ping` to simulate specific traffic patterns.
-
----
-
-## **Future Work**
-
-- Integrate a GUI for slice activation/deactivation.
-- Add support for multi-controller setups.
-- Test with more complex topologies and traffic scenarios.
-
----
-
 ## **References**
 
 - [ComNetsEmu GitHub](https://github.com/stevelorenz/comnetsemu)
 - [Ryu SDN Framework](https://ryu.readthedocs.io/en/latest/)
 - [Mininet Documentation](http://mininet.org/walkthrough/)
+
