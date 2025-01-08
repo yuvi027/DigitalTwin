@@ -13,10 +13,10 @@ This project simulates a university campus where there are dedicated slices for 
 3. When an exam and a simulation are both running, the shared slice is reserved only for researchers communication, and the researchers' slice is reserved for simulation traffic.
 4. When there is an exam and no simulation, the shared slice is deactivated, and the researchers' slice is reserved for regular researchers' communication.
 
-There are four scenarios:
-![matrix_version_3](https://github.com/user-attachments/assets/c5f595e7-a4b1-48fd-a2fe-55a182a0969a)
+The four scenarios depicted in a matrix:
+![matrix_version_4](https://github.com/user-attachments/assets/496e5e34-02e6-435b-952b-74b7d53f1000)
 
-The default setup for the network is that there is neither an exam or a simulation running (exam = false and simulation = false). Hence the student slice is only used by students and the research slice is only used for normal researcher traffic. 
+The default setup is in the bottom left in yellow.
 
 
 ## **Installation**
