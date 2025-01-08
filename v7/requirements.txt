@@ -1,0 +1,8 @@
+ryu>=4.34
+eventlet>=0.30.2
+networkx>=2.5
+six>=1.16.0
+webob>=1.8.7
+routes>=2.5.1
+oslo.config>=8.8.0
+msgpack>=1.0.3
