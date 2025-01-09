@@ -1,6 +1,8 @@
 import threading
 import time
 import subprocess
+import socket
+import json
 from ryu.base import app_manager
 from ryu.controller import ofp_event
 from ryu.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER
@@ -25,15 +27,22 @@ class TrafficSlicing(app_manager.RyuApp):
         }
 
         # Start control thread
-        threading.Thread(target=self.user_input_handler, daemon=True).start()
+        self.socket_thread = threading.Thread(target=self.user_input_handler)
+        self.socket_thread.daemon = True  # Ensure the thread ends when the main program ends
+        self.socket_thread.start()
+
 
     def clear_flows_and_queues(self):
         """Clear all flows and queues from switches"""
         try:
             for switch in ['s1', 's2', 's3', 's4']:
                 subprocess.run(['sudo', 'ovs-ofctl', 'del-flows', switch])
-                subprocess.run(['sudo', 'ovs-vsctl', 'clear', 'port', f'{switch}-eth1', 'qos'])
-                subprocess.run(['sudo', 'ovs-vsctl', 'clear', 'port', f'{switch}-eth2', 'qos'])
+                
+                if switch == "s1" or switch == "s4":
+                    subprocess.run(['sudo', 'ovs-vsctl', 'clear', 'port', f'{switch}-eth1', 'qos'])
+                    subprocess.run(['sudo', 'ovs-vsctl', 'clear', 'port', f'{switch}-eth2', 'qos'])
+                
+
         except subprocess.CalledProcessError as e:
             print(f"Error clearing flows and queues: {e}")
 
@@ -66,24 +75,52 @@ class TrafficSlicing(app_manager.RyuApp):
             # self.execute_shell_script("set_queues.sh")
             self.execute_shell_script("simulation.sh")
         else:
-            # Default mode - no scripts needed as controller handles basic forwarding
-            pass
-
+            self.execute_shell_script("miss_flow.sh")
         print(f"\nNetwork state updated:")
         print(f"Exam mode: {exam}")
         print(f"Simulation mode: {simulation}")
 
     def user_input_handler(self):
-        """Handle user input for mode changes"""
-        while True:
-            time.sleep(5)  # Wait before asking for input
+        """Handle user input through a socket"""
+        def handle_client(client_socket):
             try:
-                print("\nNetwork Control Panel")
-                exam = input("Enable exam mode (true/false): ").lower() == 'true'
-                simulation = input("Enable simulation mode (true/false): ").lower() == 'true'
-                self.update_network_state(exam, simulation)
+                with client_socket:
+                    data = client_socket.recv(1024).decode("utf-8").strip()
+                    if data:
+                        try:
+                            message = json.loads(data)
+                            exam = message["exam"].lower() == "true"
+                            simulation = message["simulation"].lower() == "true"
+
+                            self.update_network_state(exam, simulation)
+
+                        except json.JSONDecodeError:
+                            print("Invalid JSON received")
+
             except Exception as e:
-                print(f"Error in user input handler: {e}")
+                print(f"Error in socket handler: {e}")
+
+        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server.bind(("0.0.0.0", 9999))
+        server.listen(5)
+        print("Server listening on port 9999")
+
+        while True:
+            client_socket, addr = server.accept()
+            threading.Thread(target=handle_client, args=(client_socket,)).start()
+
+                        
+    #def user_input_handler(self):
+    #    """Handle user input for mode changes"""
+    #    while True:
+    #        time.sleep(5)  # Wait before asking for input
+    #        try:
+    #            print("\nNetwork Control Panel")
+    #            exam = input("Enable exam mode (true/false): ").lower() == 'true'
+    #            simulation = input("Enable simulation mode (true/false): ").lower() == 'true'
+    #            self.update_network_state(exam, simulation)
+    #        except Exception as e:
+    #            print(f"Error in user input handler: {e}")
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
     def switch_features_handler(self, ev):
