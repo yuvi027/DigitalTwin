@@ -78,20 +78,13 @@ sudo python3 control_panel.py
 
 ### Step 5: Test and Monitor Slices
 
-- Use the Mininet CLI to interact with hosts and test network performance.
-- Example commands:
+- Use the Mininet CLI to interact with hosts and test network performance. Example commands:
 
   ```bash
   mininet> pingall  # Test connectivity between hosts
   mininet> xterm h1 h3  # Open terminals for specific hosts
   ```
 
-- Use tools like `iperf` to validate bandwidth and traffic isolation between slices:
-
-  ```bash
-  iperf -s  # Run on one host
-  iperf -c <host-ip>  # Run on another host
-  ```
 - If you want to change the scenario, it's possible by giving the control panel the values of the exam (true or false) and simulation (true or false).
 ---
 
