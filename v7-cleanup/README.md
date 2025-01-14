@@ -57,7 +57,7 @@ sudo comnetsemu
 Navigate to the project directory and launch the Ryu controller:
 
 ```bash
-ryu-manager slice_controller.py
+ryu-manager controller.py
 ```
 
 ### Step 3: Run the Network Topology
@@ -65,10 +65,18 @@ ryu-manager slice_controller.py
 In a separate terminal, run the predefined network topology:
 
 ```bash
-sudo python3 custom_topology.py
+sudo python3 network.py
 ```
 
-### Step 4: Test and Monitor Slices
+### Step 4: Run the Client
+
+In another terminal, run the client (this lets us change the scenarios):
+
+```bash
+sudo python3 client.py
+```
+
+### Step 5: Test and Monitor Slices
 
 - Use the Mininet CLI to interact with hosts and test network performance.
 - Example commands:
@@ -84,7 +92,7 @@ sudo python3 custom_topology.py
   iperf -s  # Run on one host
   iperf -c <host-ip>  # Run on another host
   ```
-
+- If you want to change the scenario, it's possible by giving the client the values of the exam (true or false) and simulation (true or false).
 ---
 
 ## **Testing**
