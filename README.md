@@ -1,5 +1,5 @@
 # On Demand Slicing
-This project implements a network slicing approach in the **ComNetsEmu** platform. It allows users to dynamically activate or deactivate network slices via CLI commands. A single SDN controller,a Ryu, is used to manage the network slices.
+This project implements a network slicing approach in the **ComNetsEmu** platform. It allows users to dynamically activate or deactivate network slices via CLI commands. A single Ryu SDN controller is used to manage the network slices.
 
 ---
 
@@ -13,14 +13,21 @@ This project simulates a university campus where there are dedicated slices for 
 3. When an exam and a simulation are both running, the shared slice is reserved only for researchers communication, and the researchers' slice is reserved for simulation traffic.
 4. When there is an exam and no simulation, the shared slice is deactivated, and the researchers' slice is reserved for regular researchers' communication.
 
-The four scenarios depicted in a matrix:
+The four scenarios are depicted in the matrix:
 ![matrix_version_4](https://github.com/user-attachments/assets/496e5e34-02e6-435b-952b-74b7d53f1000)
 
-The default setup is in the bottom left in yellow.
+The default setup is in the bottom right in yellow.
 
 
 ## **Installation**
 
+### Prerequisites 
+
+**Install ComNetsEmu**:
+   Follow the installation guide for ComNetsEmu from the official repository: [ComNetsEmu GitHub](https://github.com/stevelorenz/comnetsemu).
+
+   It's best to run the program in a Virtual Machine that already has ComNetsEmu installed: [ComNetsEmu VM Image](https://www.granelli-lab.org/researches/relevant-projects/comnetsemu-labs).
+   
 ### Clone the Repository 
 Open your terminal and run the following command to clone the repository:
 
@@ -29,30 +36,10 @@ git clone https://github.com/yuvi027/OnDemandSlicing.git
 
 cd OnDemandSlicing
 ```
-### Prerequisites 
-
-1. **Install ComNetsEmu**:
-   Follow the installation guide for ComNetsEmu from the official repository: [ComNetsEmu GitHub](https://github.com/stevelorenz/comnetsemu).
-   
-1. **Install Git Dependencies**:
-```bash
-sudo apt-get install mininet openvswitch-switch
-
-pip install -r requirements.txt
-```
----
 
 ## **Usage**
 
-### Step 1: Launch the ComNetsEmu Environment
-
-Activate ComNetsEmu:
-
-```bash
-sudo comnetsemu
-```
-
-### Step 2: Start the Ryu Controller
+### Step 1: Start the Ryu Controller
 
 Navigate to the project directory and launch the Ryu controller:
 
@@ -60,7 +47,7 @@ Navigate to the project directory and launch the Ryu controller:
 ryu-manager controller.py
 ```
 
-### Step 3: Run the Network Topology
+### Step 2: Run the Network Topology
 
 In a separate terminal, run the predefined network topology:
 
@@ -68,7 +55,7 @@ In a separate terminal, run the predefined network topology:
 sudo python3 network.py
 ```
 
-### Step 4: Run the Control Panel
+### Step 3: Run the Control Panel
 
 In another terminal, run the control panel (this lets us change the scenarios):
 
@@ -76,13 +63,13 @@ In another terminal, run the control panel (this lets us change the scenarios):
 sudo python3 control_panel.py
 ```
 
-### Step 5: Test and Monitor Slices
+### Step 4: Test and Monitor Slices
 
 - Use the Mininet CLI to interact with hosts and test network performance. Example commands:
 
   ```bash
   mininet> pingall  # Test connectivity between hosts
-  mininet> xterm h1 h3  # Open terminals for specific hosts
+  mininet> xterm R1 R2  # Open terminals for simulation between the researchers
   ```
 
 - If you want to change the scenario, it's possible by giving the control panel the values of the exam (true or false) and simulation (true or false).
@@ -90,21 +77,16 @@ sudo python3 control_panel.py
 
 ## **Testing**
 
-1. **Bandwidth Validation**:
-   - Use `iperf` to test bandwidth allocation between hosts.
+1. **Slicing Validation**:
+   - Use `iperf` to test bandwidth allocation between hosts. We have defined simulation traffic as TCP traffic between the researchers on port 6000. Testing can be done by iperf and verification using wireshark.
    ```bash
-   iperf -s  # On one host
-   iperf -c <host-ip>  # On another host
+   iperf -s -p 6000           # On one host
+   iperf -c <host-ip> -p 6000 # On another host
    ```
 
-2. **Latency Measurement**:
-   - Use `ping` to measure latency.
-   ```bash
-   ping <host-ip>
-   ```
+2.  **Bandwidth Validation**:
 
-3. **Dynamic Adjustments**:
-   - Modify slice configurations and observe real-time changes in performance.
+   To verify quality of service in the shared slice, use iperf simultaneously between the researchers and the students (not on port 6000).
 
 ---
 
