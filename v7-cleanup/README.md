@@ -68,12 +68,12 @@ In a separate terminal, run the predefined network topology:
 sudo python3 network.py
 ```
 
-### Step 4: Run the Client
+### Step 4: Run the Control Panel
 
-In another terminal, run the client (this lets us change the scenarios):
+In another terminal, run the control panel (this lets us change the scenarios):
 
 ```bash
-sudo python3 client.py
+sudo python3 control_panel.py
 ```
 
 ### Step 5: Test and Monitor Slices
@@ -92,7 +92,7 @@ sudo python3 client.py
   iperf -s  # Run on one host
   iperf -c <host-ip>  # Run on another host
   ```
-- If you want to change the scenario, it's possible by giving the client the values of the exam (true or false) and simulation (true or false).
+- If you want to change the scenario, it's possible by giving the control panel the values of the exam (true or false) and simulation (true or false).
 ---
 
 ## **Testing**
