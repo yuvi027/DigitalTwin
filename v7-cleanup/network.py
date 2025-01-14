@@ -25,8 +25,8 @@ class NetworkSlicingTopo(Topo):
         host_config = dict(inNamespace=True)
         
         # Link configurations with bandwidth specifications
-        researcher_link_config = dict(bw=10)  # 10 Mbps for researcher path
-        student_link_config = dict(bw=10)     # 10 Mbps for student path
+        researcher_link_config = dict(bw=10)  # 10 Mbps for researcher slice
+        student_link_config = dict(bw=10)     # 10 Mbps for student slice
         host_link_config = dict()             # Default configuration for host links
 
         self._create_switches()

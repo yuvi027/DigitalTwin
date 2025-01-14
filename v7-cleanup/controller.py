@@ -85,13 +85,13 @@ class TrafficSlicing(app_manager.RyuApp):
 
         # Apply appropriate configuration
         if exam and simulation:
-            self.execute_shell_script("exam_and_simulation.sh")
+            self.execute_shell_script("scenarios/exam_and_simulation.sh")
         elif exam:
-            self.execute_shell_script("exam.sh")
+            self.execute_shell_script("scenarios/exam.sh")
         elif simulation:
-            self.execute_shell_script("simulation.sh")
+            self.execute_shell_script("scenarios/simulation.sh")
         else:
-            self.execute_shell_script("miss_flow.sh")
+            self.execute_shell_script("scenarios/miss_flow.sh")
 
         print(f"\nNetwork state updated:")
         print(f"Exam mode: {exam}")
@@ -134,7 +134,6 @@ class TrafficSlicing(app_manager.RyuApp):
         Handle switch connection events and install default flow entries.
         Called when a switch connects or reconnects to the controller.
         """
-        print("switch_features_handler called")
         datapath = ev.msg.datapath
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
@@ -173,7 +172,7 @@ class TrafficSlicing(app_manager.RyuApp):
         Send a packet out through the switch.
         
         Args:
-            msg: PacketIn message
+            msg: data
             datapath: Switch connection object
             in_port: Input port number
             actions: Actions to be applied to the packet
@@ -198,7 +197,6 @@ class TrafficSlicing(app_manager.RyuApp):
         Handle incoming packets that don't match any flow entries.
         Installs appropriate flow rules based on the slice configuration.
         """
-        print("_packet_in_handler called")
         msg = ev.msg
         datapath = msg.datapath
         in_port = msg.match["in_port"]
