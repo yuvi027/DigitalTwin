@@ -59,7 +59,7 @@ class TrafficSlicing(app_manager.RyuApp):
         """Execute a shell script with sudo privileges."""
         try:
             subprocess.run(['sudo', 'bash', script_name], check=True)
-            print(f"Successfully executed {script_name}")
+            print(f"Successfully executed {script_name.split('/')[-1]}")
         except subprocess.CalledProcessError as e:
             print(f"Error executing {script_name}: {e}")
 
@@ -96,6 +96,7 @@ class TrafficSlicing(app_manager.RyuApp):
         print(f"\nNetwork state updated:")
         print(f"Exam mode: {exam}")
         print(f"Simulation mode: {simulation}")
+        print("--------------------------------")
 
     def user_input_handler(self):
         """
